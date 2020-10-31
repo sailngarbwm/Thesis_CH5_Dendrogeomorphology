@@ -1,0 +1,5 @@
+name,raster_file,Shapefile
+Bris,E:\Garber backup backup\Brisbane GIS data\BrisbaneRiverData\AA_DEM_Mosaic\UB_and_Tribs2015_DEM.tif,E:\Brisbane_Pine GIS QGIS_2018\GIS_scripts_dendro\Bris_merged_buf_V2.geojson
+Kobble,E:\Brisbane_Pine GIS QGIS_2018\Brisbane GIS data\Lidar_Pine\2014_UpperPine_MinorBasinMosaics\2014_DEM_UpperPine_MinorBasin_mga56.tif,E:\Brisbane_Pine GIS QGIS_2018\GIS_scripts_dendro\kobble_merged_buf_V2.geojson
+Mary,E:\Brisbane_Pine GIS QGIS_2018\Mary River imagery\Mary LiDAR\2014_sunshine_coast_merge.2tif.tif,E:\Brisbane_Pine GIS QGIS_2018\GIS_scripts_dendro\Mary_merged_buf-V2.geojson
+NPR,E:\Brisbane_Pine GIS QGIS_2018\Brisbane GIS data\Lidar_Pine\2014_UpperPine_MinorBasinMosaics\2014_DEM_UpperPine_MinorBasin_mga56.tif,E:\Brisbane_Pine GIS QGIS_2018\GIS_scripts_dendro\NPR_merged_buf_V2.geojson

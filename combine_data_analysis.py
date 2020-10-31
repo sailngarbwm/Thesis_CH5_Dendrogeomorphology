@@ -10,6 +10,9 @@ import numpy as np
 import seaborn as sns 
 import matplotlib.pyplot as plt
 sns.set_context('paper')
+from pathlib import Path
+
+wd = Path(__file__)
 
 #%
 #%%
@@ -203,21 +206,21 @@ field_dat[fld_flt].sort_values('GPS_point')
 
 #% Loading elevation GIS data
 
-bris_elev = gpd.read_file('bris_merged_buff_qgis.geojson')
+bris_elev = gpd.read_file('Bris_merged_buff_V2_RZonal.geojson')
 bris_elev['new_name'] = bris_elev.name.apply(lambda x: str(x)+'_Bris')
 # bris_elev = pd.DataFrame(bris_elev.drop(columns = 'geometry'))
 # print(bris_elev.head())
 
-mary_elev = gpd.read_file('Mary_merged_buff_qgis.geojson')
+mary_elev = gpd.read_file('Mary_merged_buff_V2_RZonal.geojson')
 mary_elev['new_name'] = mary_elev.name.apply(lambda x: str(x)+'_Mary')
 # mary_elev = pd.DataFrame(mary_elev.drop(columns = 'geometry'))
 
 
-NPR_elev = gpd.read_file('NPR_merged_buff_qgis.geojson')
+NPR_elev = gpd.read_file('NPR_merged_buff_V2_RZonal.geojson')
 NPR_elev['new_name'] = NPR_elev.name.apply(lambda x: str(x)+'_NPR')
 # NPR_elev = pd.DataFrame(NPR_elev.drop(columns = 'geometry'))
 
-kobble_elev =  gpd.read_file('kobble_merged_buf_QGIS.geojson')
+kobble_elev =  gpd.read_file('Kobble_merged_buff_V2_RZonal.geojson')
 kobble_elev['new_name'] = kobble_elev.name.apply(lambda x: str(x)+'_kobble')
 def get_geom_cols(df):
     df['Center_point'] = df['geometry'].centroid
@@ -570,9 +573,12 @@ print(df_comb['rel_sprout_el'].describe(percentiles = [.05,.1,.25,.50,.75,.9]).t
 # df_comb.columns
 #%%
 # df_bury['sprout_depth_reached'].unique()
+
 df_bury = df_comb[df_comb['meas_type'] == 'dbh burial']
 
-df_bury[df_bury['structure category'] == ' ']['Notes']
+df_bury_unfiltered = df_bury.copy()
+
+# df_bury[df_bury['structure category'] == ' ']['Notes']
 
 df_bury = df_bury[df_bury['structure category']!=' ']
 
@@ -586,9 +592,7 @@ df_bury.loc[df_bury['Root_depth']<=0, 'structure category'] = 'no deposition'
 
 print('after first filter df_bury shape', df_bury.shape)
 #%%
-with open('buried_positions_data.tex', 'w') as file:
-    file.write(df_bury['rel_sprout_el'].describe(percentiles = [.05,.1,.25,.50,.75,.9, .95]).to_latex())
-    file.close()
+
 #%%
 
 cat_colors = sns.xkcd_palette(['greyish']) +sns.color_palette('Blues', 5)[2:]+ sns.color_palette(['orange'])
@@ -770,6 +774,11 @@ df_bury['d_rate'] = df_bury['Root_depth']/df_bury['age']
 
 df_bury['d_rate_err'] = np.sqrt((df_bury['age_pi']/df_bury['age'])**2)*np.absolute(df_bury['d_rate'])
 
+df_bury['d_rate'] = df_bury['d_rate'].replace([np.inf, -np.inf], np.nan)
+
+with open(wd.absolute().parent/'buried_positions_data_2.tex', 'w') as file:
+    file.write(df_bury[['rel_sprout_el', 'Root_depth', 'd_rate']].describe(percentiles = [.05,.1,.25,.50,.75,.9, .95]).to_latex())
+    file.close()
 
 #%%
 df_comb.columns
@@ -1179,11 +1188,11 @@ print(df_bury.groupby('deposition type')['Root_depth'].count())
 # df_buried = df_bury[df_bury['deposition type'] != 'no deposition']
 fig, (ax, ax2) = plt.subplots(figsize = (7,4.5), ncols=2, sharey=True)
 
-ax.errorbar(df_bury['Root_depth'], df_bury['rel_sprout_el'], 
+ax.errorbar(df_bury['Root_depth'], df_bury['rel_sprout_el_b_max'], 
             yerr = df_bury['rel_sprout_el_er'],
             alpha = 0.4, fmt='none', c='grey')
 
-sns.scatterplot(data = df_bury, x = 'Root_depth', y  = 'rel_sprout_el',
+sns.scatterplot(data = df_bury, x = 'Root_depth', y  = 'rel_sprout_el_b_max',
                 hue = 'deposition type', style = 'deposition type',
                 hue_order  = cat_list, palette = cat_dict1,ax = ax)
 
@@ -1193,11 +1202,11 @@ ax.set_xlabel('burial depth $(cm)$')
 ax.set_xlim(-20,150)
 ax.set_ylim(0,2.5)
 
-ax2.errorbar(df_bury['d_rate'], df_bury['rel_sprout_el'], 
+ax2.errorbar(df_bury['d_rate'], df_bury['rel_sprout_el_b_max'], 
             yerr = df_bury['rel_sprout_el_er'], xerr = df_bury['d_rate_err'],
             alpha = 0.4, fmt='none', c='grey')
 
-sns.scatterplot(data = df_bury, x = 'd_rate', y  = 'rel_sprout_el',
+sns.scatterplot(data = df_bury, x = 'd_rate', y  = 'rel_sprout_el_b_max',
                 hue = 'deposition type', style = 'deposition type',
                 hue_order  = cat_list, palette = cat_dict1,ax = ax2)
 
@@ -1213,6 +1222,66 @@ fig = figure_legend(fig, loc = (.73,.69) )
 plt.tight_layout(w_pad=0)
 os.chdir(r'C:\Users\jgarber\Documents\PhD Thesis Research\dendro text')
 fig.savefig('rootdepth_andeprate_pos.pdf')
+
+
+
+
+
+
+df_bury['rel_sprout_el_perc'] = df_bury['rel_sprout_el_b_max']*100
+fig, (ax, ax2, ax3) = plt.subplots(figsize = (9,4.5), ncols=3, sharey=True)
+
+for axer in (ax, ax2, ax3):
+    axer.axhspan(ymin = 14, ymax = 25, color='purple', alpha = 0.5, label = 'critical zone')
+
+ax.errorbar(df_bury['Root_depth'], df_bury['rel_sprout_el_perc'], 
+            yerr = df_bury['rel_sprout_el_er']*100,
+            alpha = 0.4, fmt='none', c='grey')
+
+sns.scatterplot(data = df_bury, x = 'Root_depth', y  = 'rel_sprout_el_perc',
+                hue = 'deposition type', style = 'deposition type',
+                hue_order  = cat_list, palette = cat_dict1,ax = ax)
+
+create_wrap(ax, 'normalized establishment elevation $(Z_{norm})$')
+ax.set_xlabel('burial depth $(cm)$')
+
+ax.set_xlim(-20,150)
+ax.set_ylim(0,2.5)
+
+ax2.errorbar(df_bury['d_rate'], df_bury['rel_sprout_el_perc'], 
+            yerr = df_bury['rel_sprout_el_er']*100, xerr = df_bury['d_rate_err'],
+            alpha = 0.4, fmt='none', c='grey')
+
+sns.scatterplot(data = df_bury, x = 'd_rate', y  = 'rel_sprout_el_perc',
+                hue = 'deposition type', style = 'deposition type',
+                hue_order  = cat_list, palette = cat_dict1,ax = ax2)
+
+sns.boxplot(data = df_bury, x = 'deposition type',
+                y = 'rel_sprout_el_perc', order = cat_list, palette = cat_dict1, ax=ax3)
+ax3.set_xlabel("deposition categories")
+ax3.set_ylabel("")
+xtick_rotater(ax3)
+
+    
+# create_wrap(ax3, 'normalized establishment elevation $(Z_{norm})$')
+# ax2.tick_params(axis='x', bottom = False, labelbottom=False)
+ax2.set_xlabel('deposition rate $(\\frac{cm}{yr})$')
+
+ax2.set_xlim(-1,10)
+ax2.set_ylim(0,300)
+ax2.tick_params('y', left=False)
+ax3.tick_params('y', left=False)
+
+add_subls([ax,ax2, ax3],coords= (0.87,0.05))
+fig = figure_legend(fig, loc = (.6,.67) )
+plt.tight_layout(w_pad=0, h_pad=0)
+os.chdir(r'C:\Users\jgarber\Documents\PhD Thesis Research\dendro text')
+
+
+fig.savefig('discussion_figur.pdf', bbox_inches='tight')
+
+
+
 
 
 # get the age_dbh relationship plot ready

@@ -1,0 +1,4 @@
+bed_number,top,base,rock_type,prim_litho,grain_size,prim_pct,sec_litho,sec_pct,ter_litho,ter_pct,contact_type,grading,grain_size_base,grain_size_top,grain_size_point_A,strat_pos_point_A,grain_size_point_B,strat_pos_point_B,sorting,roundness,matrix,cement,fabric,color,hue,munsell_color,notes
+1,0,20,sedimentary,floodplain,silty loam,,,,,,,,,,,,,,,,,,,,,,
+2,20,30,sedimentary,floodplain,silty loam,,,,,,,,,,,,,,,,,,,,,,
+3,30,40,sedimentary,bar,gravel,,,,,,,,,,,,,,,,,,,,,,

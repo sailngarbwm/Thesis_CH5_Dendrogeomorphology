@@ -1,0 +1,16 @@
+bed_number,top,base,rock_type,prim_litho,grain_size,prim_pct,sec_litho,sec_pct,ter_litho,ter_pct,contact_type,grading,grain_size_base,grain_size_top,grain_size_point_A,strat_pos_point_A,grain_size_point_B,strat_pos_point_B,sorting,roundness,matrix,cement,fabric,color,hue,munsell_color,notes
+1,0,9,sedimentary,sandstone,medium / coarse sand,,,,,,,,,,,,,,,,,,,,,,
+2,9,23,sedimentary,siltstone,silt / very fine sand,,,,,,,,,,,,,,,,,,,,,,
+3,23,32,sedimentary,siltstone,very fine sand,,,,,,,,,,,,,,,,,,,,,,
+4.1,32,40,sedimentary,sandstone,medium sand,,,,,,,,,,,,,,,,,,,,,,original 4 is split
+4.2,40,41,sedimentary,siltstone,silt / very fine sand,,,,,,,,,,,,,,,,,,,,,,original 4 is split
+4.3,41,45,sedimentary,sandstone,medium sand,,,,,,,,,,,,,,,,,,,,,,original 4 is split
+4.4,45,46,sedimentary,siltstone,silt / very fine sand,,,,,,,,,,,,,,,,,,,,,,original 4 is split
+4.5,46,49,sedimentary,sandstone,medium sand,,,,,,,,,,,,,,,,,,,,,,original 4 is split
+5,49,70,sedimentary,siltstone,silt,,,,,,,,,,,,,,,,,,,,,,
+6,70,75,sedimentary,conglomerate,pebble,,,,,,,,,,,,,,,,,,,,,,
+7,75,79,sedimentary,sandstone,fine / medium sand,,,,,,,,,,,,,,,,,,,,,,
+8,79,83,sedimentary,conglomerate,very coarse / granule,,,,,,,,,,,,,,,,,,,,,,
+9,83,94,sedimentary,sandstone,very fine / fine sand,,,,,,,,,,,,,,,,,,,,,,
+10,94,100,sedimentary,sandstone,medium sand,,,,,,,,,,,,,,,,,,,,,,
+11,100,110,sedimentary,conglomerate,pebble /  cobble,,,,,,,,,,,,,,,,,,,,,,
